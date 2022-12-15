@@ -7,21 +7,20 @@ import torch
 
 
 def set_gpu(x):
-    os.environ['CUDA_VISIBLE_DEVICES'] = x
-    print('using gpu:', x)
+    os.environ["CUDA_VISIBLE_DEVICES"] = x
+    print("using gpu:", x)
 
 
 def ensure_path(path):
     if os.path.exists(path):
-        if input('{} exists, remove? ([y]/n)'.format(path)) != 'n':
+        if input("{} exists, remove? ([y]/n)".format(path)) != "n":
             shutil.rmtree(path)
             os.makedirs(path)
     else:
         os.makedirs(path)
 
 
-class Averager():
-
+class Averager:
     def __init__(self):
         self.n = 0
         self.v = 0
@@ -48,12 +47,11 @@ def euclidean_metric(a, b):
     m = b.shape[0]
     a = a.unsqueeze(1).expand(n, m, -1)
     b = b.unsqueeze(0).expand(n, m, -1)
-    logits = -((a - b)**2).sum(dim=2)
+    logits = -((a - b) ** 2).sum(dim=2)
     return logits
 
 
-class Timer():
-
+class Timer:
     def __init__(self):
         self.o = time.time()
 
@@ -61,16 +59,18 @@ class Timer():
         x = (time.time() - self.o) / p
         x = int(x)
         if x >= 3600:
-            return '{:.1f}h'.format(x / 3600)
+            return "{:.1f}h".format(x / 3600)
         if x >= 60:
-            return '{}m'.format(round(x / 60))
-        return '{}s'.format(x)
+            return "{}m".format(round(x / 60))
+        return "{}s".format(x)
+
 
 _utils_pp = pprint.PrettyPrinter()
+
+
 def pprint(x):
     _utils_pp.pprint(x)
 
 
 def l2_loss(pred, label):
-    return ((pred - label)**2).sum() / len(pred) / 2
-
+    return ((pred - label) ** 2).sum() / len(pred) / 2
